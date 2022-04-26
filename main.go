@@ -5,22 +5,6 @@ import (
 	"sort"
 )
 
-// func intToRoman(num int) string {
-// 	values := map[int]string{
-// 		"I": 1,
-// 		"V": 5,
-// 		"X": 10,
-// 		"L": 50,
-// 		"C": 100,
-// 		"D": 500,
-// 		"M": 1000,
-// 	}
-// 	for k, v := range values {
-// 		fmt.Println(k, v)
-// 	}
-// 	return ""
-// }
-
 type rect struct {
 	width, height int
 }
@@ -61,8 +45,6 @@ func birthdayCakeCandles(candles []int32) int32 {
 }
 
 func main() {
-	// res := intToRoman(2)
-	// fmt.Println(res)
 	rectangle := rect{2, 4}
 	fmt.Println(rectangle.perimeter())
 	miniMaxSum([]int32{5, 3, 1, 7, 9})
