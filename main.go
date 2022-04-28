@@ -3,15 +3,8 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strconv"
 )
-
-type rect struct {
-	width, height int
-}
-
-func (r rect) perimeter() int {
-	return 2*r.height + 2*r.width
-}
 
 func miniMaxSum(arr []int32) {
 	sort.Slice(arr, func(i, j int) bool { return arr[i] < arr[j] })
@@ -44,10 +37,20 @@ func birthdayCakeCandles(candles []int32) int32 {
 	return int32(highest)
 }
 
+func timeConversion(s string) string {
+	ext := s[len(s)-2:]
+	hour := s[:2]
+	if ext == "PM" && hour != "12" {
+		temp, _ := strconv.Atoi(hour)
+		hour = strconv.Itoa(12 + temp)
+	} else if ext == "AM" && hour == "12" {
+		hour = "00"
+	}
+	return hour + s[2:8]
+}
+
 func main() {
-	rectangle := rect{2, 4}
-	fmt.Println(rectangle.perimeter())
 	miniMaxSum([]int32{5, 3, 1, 7, 9})
-	miniMaxSum([]int32{256741038, 623958417, 467905213, 714532089, 938071625})
 	fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
+	fmt.Println(timeConversion("12:00:00PM"))
 }
