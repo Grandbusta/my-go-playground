@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
 	"strconv"
+	"time"
 )
 
 func miniMaxSum(arr []int32) {
@@ -49,8 +51,46 @@ func timeConversion(s string) string {
 	return hour + s[2:8]
 }
 
+func f(n int) {
+	for i := 0; i < 10; i++ {
+		fmt.Println(n, ":", i)
+		amt := time.Duration(rand.Intn(250))
+		time.Sleep(time.Millisecond * amt)
+	}
+}
+
+func pinger(c chan string) {
+	for i := 0; ; i++ {
+		c <- "ping"
+	}
+}
+func ponger(c chan string) {
+	for i := 0; ; i++ {
+		c <- "pong"
+	}
+}
+
+func printer(c chan string) {
+	for {
+		msg := <-c
+		fmt.Println(msg)
+		time.Sleep(time.Second * 1)
+	}
+}
+
 func main() {
 	miniMaxSum([]int32{5, 3, 1, 7, 9})
 	fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
 	fmt.Println(timeConversion("12:00:00PM"))
+	for i := 0; i < 10; i++ {
+		go f(i)
+	}
+
+	c := make(chan string)
+	go pinger(c)
+	go ponger(c)
+	go printer(c)
+
+	var input string
+	fmt.Scanln(&input)
 }
