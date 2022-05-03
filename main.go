@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -51,6 +52,26 @@ func timeConversion(s string) string {
 	return hour + s[2:8]
 }
 
+func gradingStudents(grades []int32) []int32 {
+	new_grades := make([]int32, 0)
+
+	for _, v := range grades {
+		if v < 38 {
+			new_grades = append(new_grades, v)
+		} else {
+			round := func(num int32) int32 {
+				return int32(math.Ceil(float64(num)/5) * 5)
+			}(v)
+			if round-v < 3 {
+				new_grades = append(new_grades, round)
+			} else {
+				new_grades = append(new_grades, v)
+			}
+		}
+	}
+	return new_grades
+}
+
 func f(n int) {
 	for i := 0; i < 10; i++ {
 		fmt.Println(n, ":", i)
@@ -82,15 +103,16 @@ func main() {
 	miniMaxSum([]int32{5, 3, 1, 7, 9})
 	fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
 	fmt.Println(timeConversion("12:00:00PM"))
-	for i := 0; i < 10; i++ {
-		go f(i)
-	}
+	fmt.Println(gradingStudents([]int32{73, 67, 38, 33}))
+	// for i := 0; i < 10; i++ {
+	// 	go f(i)
+	// }
 
-	c := make(chan string)
-	go pinger(c)
-	go ponger(c)
-	go printer(c)
+	// c := make(chan string)
+	// go pinger(c)
+	// go ponger(c)
+	// go printer(c)
 
-	var input string
-	fmt.Scanln(&input)
+	// var input string
+	// fmt.Scanln(&input)
 }
