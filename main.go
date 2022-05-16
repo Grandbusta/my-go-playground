@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -99,15 +100,69 @@ func printer(c chan string) {
 	}
 }
 
+func isEven(n int) bool {
+	return n%2 == 0
+}
+
+func pageCount(n, p int) {
+	// front := 0
+	// back := 0
+	// hash := make([]interface{}, 0)
+	// for i := 1; i <= n; i++ {
+	// 	if i == 1 {
+	// 		hash = append(hash, 1)
+	// 	} else {
+	// 		if reflect.TypeOf(hash[len(hash)-1]) == "[]int" && len(hash[len(hash)-1]) {
+	// 			hash[len(hash)-1] = append(hash[len(hash)-1], i)
+	// 		}
+	// 		hash = append(hash, []int{i})
+	// 	}
+	// }
+	// fmt.Println(hash)
+
+}
+
+func plusMinus(arr []int32) {
+	positive := 0
+	negative := 0
+	zero := 0
+	for i := 0; i < len(arr); i++ {
+		if arr[i] > 0 {
+			positive++
+		}
+		if arr[i] < 0 {
+			negative++
+		}
+		if arr[i] == 0 {
+			zero++
+		}
+	}
+	getPrecision := func(val int32) string {
+		return fmt.Sprintf("%.6f", float64(val)/float64(len(arr)))
+	}
+	fmt.Println(getPrecision(int32(positive)))
+	fmt.Println(getPrecision(int32(negative)))
+	fmt.Println(getPrecision(int32(zero)))
+}
+
+func staircase(n int32) {
+	for i := 0; i < int(n); i++ {
+		res := strings.Repeat(" ", int(n)-1-i) + strings.Repeat("#", i+1)
+		fmt.Println(res)
+	}
+}
+
 func main() {
 	miniMaxSum([]int32{5, 3, 1, 7, 9})
 	fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
 	fmt.Println(timeConversion("12:00:00PM"))
 	fmt.Println(gradingStudents([]int32{73, 67, 38, 33}))
+	pageCount(5, 2)
+	plusMinus([]int32{1, 1, 0, -1, -1})
+	staircase(6)
 	// for i := 0; i < 10; i++ {
 	// 	go f(i)
 	// }
-
 	// c := make(chan string)
 	// go pinger(c)
 	// go ponger(c)
