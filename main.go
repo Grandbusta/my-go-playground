@@ -152,14 +152,197 @@ func staircase(n int32) {
 	}
 }
 
+// func climbingLeaderboard(ranked []int32, player []int32) []int32 {
+// 	h := make(map[int32]string, 0)
+// 	for i := 0; i < len(ranked); i++ {
+// 		if _, ok := h[ranked[i]]; ok {
+
+// 		}
+// 	}
+// }
+
+func climbingLeaderboard(ranked []int32, player []int32) []int32 {
+	// Write your code here
+	rank_arr := make([]int, 0)
+	for i := 0; i < len(ranked); i++ {
+		if i == 0 {
+			rank_arr = append(rank_arr, 1)
+		} else {
+			if ranked[i-1] == ranked[i] {
+				rank_arr = append(rank_arr, rank_arr[i-1])
+			} else {
+				rank_arr = append(rank_arr, rank_arr[i-1]+1)
+			}
+		}
+	}
+	idx := 0
+	ridx := len(ranked) - 1
+	new_ranks := make([]int, 0)
+	for idx < len(player) {
+		if player[idx] < ranked[ridx] {
+			new_ranks = append(new_ranks, rank_arr[ridx]+1)
+			idx++
+			ridx--
+		} else if player[idx] == ranked[ridx] {
+			new_ranks = append(new_ranks, rank_arr[ridx])
+			idx++
+			ridx--
+		} else {
+			if player[idx] < ranked[ridx-1] {
+				new_ranks = append(new_ranks, rank_arr[ridx]+1)
+				idx++
+				ridx--
+			} else if player[idx] == ranked[ridx-1] {
+				new_ranks = append(new_ranks, rank_arr[ridx])
+				idx++
+				ridx--
+			} else {
+				new_ranks = append(new_ranks, rank_arr[ridx]-1)
+				idx++
+				ridx--
+			}
+		}
+		fmt.Println(rank_arr[ridx])
+	}
+	fmt.Println(rank_arr)
+	return []int32{3}
+}
+
+func sumDigits(n int) int {
+	sum := 0
+	for n > 0 {
+		// find the remainder of n, add it to sum
+		sum += n % 10
+		// divide n by 10 to get the main and reassign
+		n /= 10
+	}
+	return sum
+}
+
+func diffPairs(arr []int, k int) {
+	// first approach: brute force
+	// idx := 0
+	// count := 0
+	// for idx < len(arr) {
+	// 	for i := idx + 1; i < len(arr); i++ {
+	// 		if arr[i]-arr[idx] == k || arr[idx]-arr[i] == k {
+	// 			count++
+	// 		}
+	// 	}
+	// 	idx++
+	// }
+	// fmt.Println(count)
+
+	// Optimized approach
+	hash := make(map[int]int, 0)
+	count := 0
+	for i := 0; i < len(arr); i++ {
+		hash[arr[i]] = arr[i]
+	}
+	for i := 0; i < len(arr); i++ {
+		if _, ok := hash[arr[i]-k]; ok {
+			count++
+		}
+	}
+	fmt.Println(count)
+
+}
+
+func Permutations(a string, b string) {
+	// get the length of a, delare a pointer variable starting from 0, get the next len(a) values from pointer.
+	// get the 4 values. run a loop to check if each of the values is a, if any of it does not exist, break the loop, else increase count. increase p
+	// a_len := len(a)
+	a_hash := make(map[string]int, 0)
+	for i := 0; i < len(a); i++ {
+		if _, ok := a_hash[string(a[i])]; ok {
+			a_hash[string(a[i])]++
+		} else {
+			a_hash[string(a[i])] = 1
+		}
+	}
+	all_perm := make([]string, 0)
+	check_perm := func(value string) (bool, string) {
+		status := true
+		c_hash := make(map[string]int, 0)
+		for i := 0; i < len(value); i++ {
+			val := string(value[i])
+			if _, ok := a_hash[string(a[i])]; ok {
+				c_hash[val]++
+			} else {
+				c_hash[val] = 1
+			}
+		}
+		for k, v := range c_hash {
+			if v != a_hash[k] {
+				status = false
+				break
+			}
+		}
+
+		return status, value
+	}
+	count := 0
+	for i := 0; i <= len(b)-len(a); i++ {
+		b_values := b[i : i+4]
+		status, value := check_perm(b_values)
+		if status {
+			all_perm = append(all_perm, value)
+			count++
+		}
+	}
+	fmt.Println(all_perm)
+	fmt.Println(count)
+}
+
+func encryption(s string) string {
+	// Write your code here
+	n_spaces := strings.Replace(s, " ", "", -1)
+	s_len := len(n_spaces)
+	sq_len := math.Sqrt(float64(s_len))
+	// row:=math.Floor(sq_len)
+	column := math.Ceil(sq_len)
+	grid := make([]string, 0)
+	for i := 0; i < len(n_spaces); i += int(column) {
+		v := ""
+		if i+int(column) > len(n_spaces) {
+			v = n_spaces[i:]
+		} else {
+			v = n_spaces[i : i+int(column)]
+		}
+		grid = append(grid, v)
+	}
+	res := make([]string, 0)
+	j := 0
+	for j < int(column) {
+		d := ""
+		for i := 0; i < len(grid); i++ {
+			val := ""
+			if j >= len(grid[i]) {
+				val = ""
+			} else {
+				val = string(grid[i][j])
+			}
+			d += val
+		}
+		res = append(res, d)
+		j++
+	}
+	return strings.Join(res, " ")
+}
+
 func main() {
-	miniMaxSum([]int32{5, 3, 1, 7, 9})
-	fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
-	fmt.Println(timeConversion("12:00:00PM"))
-	fmt.Println(gradingStudents([]int32{73, 67, 38, 33}))
-	pageCount(5, 2)
-	plusMinus([]int32{1, 1, 0, -1, -1})
-	staircase(6)
+	// miniMaxSum([]int32{5, 3, 1, 7, 9})
+	// fmt.Println(birthdayCakeCandles([]int32{3, 2, 1, 3}))
+	// fmt.Println(timeConversion("12:00:00PM"))
+	// fmt.Println(gradingStudents([]int32{73, 67, 38, 33}))
+	// pageCount(5, 2)
+	// plusMinus([]int32{1, 1, 0, -1, -1})
+	// staircase(6)
+	// climbingLeaderboard([]int32{10, 90, 90, 80}, []int32{70, 80, 105})
+	// fmt.Println(sumDigits(22))
+	diffPairs([]int{1, 7, 5, 9, 2, 12, 3}, 2)
+	Permutations("abbc", "cbabadcbbabbcbabaabccbabc")
+	fmt.Println(encryption("haveaniceday"))
 	// for i := 0; i < 10; i++ {
 	// 	go f(i)
 	// }
